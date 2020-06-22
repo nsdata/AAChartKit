@@ -6,9 +6,6 @@
         <script src="AAHighchartsMore.js"></script>
         <script src="AAFunnel.js"></script>
         <script src="AAEasing.js"></script>
-<!--        <script src="https://code.highcharts.com/highcharts.js"></script>-->
-<!--        <script src="https://code.highcharts.com/highcharts-more.js"></script>-->
-<!--        <script src="https://code.highcharts.com/modules/funnel.js"></script>-->
         <style>
             *{ -webkit-user-select: none; 
                 user-select: none; }
@@ -46,7 +43,20 @@
                 
                 configureOptionsFormatters(aaOptions);
                 
-                aaGlobalChart = Highcharts.chart('container', aaOptions);
+                var images = aaOptions.rendererImages;
+                if (images && images.length > 0) {
+                    aaOptions.title.text = "1"
+                    aaOptions.title.style.fillOpacity = 0.0
+                } 
+
+                aaGlobalChart = Highcharts.chart('container', aaOptions, function (chart) {
+                    if (!images || images.length == 0) return;
+                    for (let index = 0; index < images.length; index++) {
+                        const url = images[index];
+                        chart.renderer.image(url, chart.series[0].data[index].plotX + chart.plotBox.x- 10, 10, 20, 20)
+                        .add();
+                    }
+                });
             }
         
         function configureEasyGradientColor(aaOptions) {
@@ -121,14 +131,7 @@
                 && aaOptions.yAxis.labels
                 && aaOptions.yAxis.labels.formatter) {
                 aaOptions.yAxis.labels.formatter = eval(aaOptions.yAxis.labels.formatter);
-            }
-                
-            if (aaOptions.plotOptions
-                && aaOptions.plotOptions.series
-                && aaOptions.plotOptions.series.dataLabels
-                && aaOptions.plotOptions.series.dataLabels.formatter) {
-                aaOptions.plotOptions.series.dataLabels.formatter = eval(aaOptions.plotOptions.series.dataLabels.formatter);
-            }
+            } 
         }
 
         function onlyRefreshTheChartDataWithSeries(receivedSeries, animation) {
@@ -215,13 +218,6 @@
         
         function evaluateTheJavaScriptStringFunction(jsStringFunction) {
             eval(jsStringFunction);
-        }
-        
-        function changeContainerSize(receivedWidth, receivedHeight) {
-            var container = document.getElementById('container');
-            container.style.width = receivedWidth;
-            container.style.height = receivedHeight;
-            aaGlobalChart.setSize(receivedWidth, receivedHeight);
         }
         
             </script>

@@ -53,13 +53,17 @@
 
 @optional
 
-/// The delegate method of chart view finish loading
-/// @param aaChartView AAChartView object instance
+/**
+ The delegate method of chart view finish loading
+ */
 - (void)aaChartViewDidFinishLoad:(AAChartView *)aaChartView;
 
-/// The delegate method of getting move over event message model
-/// @param aaChartView The instance object of chart view
-/// @param message User finger move over event message model
+/**
+ The delegate method of getting move over event message model
+
+ @param aaChartView The instance object of chart view
+ @param message move over event message model
+ */
 - (void)aaChartView:(AAChartView *)aaChartView moveOverEventWithMessage:(AAMoveOverEventMessageModel *)message;
 
 @end
@@ -69,37 +73,23 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 
 @interface AAChartView:WKWebView
 
-
-/// The AAChartView did finish load event and move over event delegate
 @property (nonatomic, weak)   id<AAChartViewEventDelegate> delegate;
 
-/// Configure the behavior of adjustedContentInset.
-/// Default is UIScrollViewContentInsetAdjustmentAutomatic.
+/**
+ Configure the behavior of adjustedContentInset.
+ Default is UIScrollViewContentInsetAdjustmentAutomatic.
+ */
 @property(nonatomic) UIScrollViewContentInsetAdjustmentBehavior contentInsetAdjustmentBehavior API_AVAILABLE(ios(11.0),tvos(11.0));
 
-/// The block method of chart view finish loading
+/**
+ The block method of chart view finish loading
+ */
 @property (nonatomic, copy) AADidFinishLoadBlock didFinishLoadBlock;
 
-/// The block method of user finger move over event
+/**
+ The block method of user finger move over event
+ */
 @property (nonatomic, copy) AAMoveOverEventBlock moveOverEventBlock;
-
-/// Set the chart view can scroll or not
-@property (nonatomic, assign) BOOL scrollEnabled;
-
-/// Content width of AAChartView
-@property (nonatomic, assign) CGFloat  contentWidth;
-
-/// Content height of AAChartView
-@property (nonatomic, assign) CGFloat  contentHeight;
-
-/// Hide chart series content or not
-@property (nonatomic, assign) BOOL chartSeriesHidden;
-
-/// Set the chart view background color be clear
-@property (nonatomic, assign) BOOL isClearBackgroundColor;
-
-/// Set the chart view content be adaptive to screen rotation
-@property (nonatomic, assign) BOOL isAdaptiveScreenRotation;
 
 
 /// Chart view finish loading event handler
@@ -110,14 +100,45 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 /// @param handler event handler
 - (void)moveOverEventHandler:(AAMoveOverEventBlock)handler;
 
-#pragma CONFIGURE THE CHART VIEW CONTENT WITH AACHARTMODEL
+/**
+ Set the chart view can scroll or not
+ */
+@property (nonatomic, assign) BOOL scrollEnabled;
 
-/// Function of drawing chart view
-/// @param chartModel The instance object of AAChartModel
+/**
+ Content width of AAChartView
+ */
+@property (nonatomic, assign) CGFloat  contentWidth;
+
+/**
+ Content height of AAChartView
+ */
+@property (nonatomic, assign) CGFloat  contentHeight;
+
+/**
+ Hide chart series content or not
+ */
+@property (nonatomic, assign) BOOL chartSeriesHidden;
+
+/**
+ Set the chart view background color be clear
+ */
+@property (nonatomic, assign) BOOL isClearBackgroundColor;
+
+
+#pragma CONFIGURE THE CHART VIEW CONTENT WITH `AACHARTMODEL
+/**
+ Function of drawing chart view
+ 
+ @param chartModel The instance object of chart model
+ */
 - (void)aa_drawChartWithChartModel:(AAChartModel *)chartModel;
 
-/// Function of only refresh the chart data
-/// @param series Series array of AAChartModel instance object
+/**
+ Function of only refresh the chart data
+ 
+ @param series  Series array of AAChartModel instance object
+ */
 - (void)aa_onlyRefreshTheChartDataWithChartModelSeries:(NSArray<AASeriesElement *> *)series;
 
 /// Function to refresh chart data only
@@ -125,19 +146,28 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 /// @param animation Have animation effect or not
 - (void)aa_onlyRefreshTheChartDataWithChartModelSeries:(NSArray<AASeriesElement *> *)series animation:(BOOL)animation;
 
-/// Function of refreshing whole chart view content
-/// @param chartModel The instance object of AAChartModel
+
+/**
+ Function of refreshing whole chart view content
+ 
+ @param chartModel The instance object of chart model
+ */
 - (void)aa_refreshChartWithChartModel:(AAChartModel *)chartModel;
 
 
-#pragma CONFIGURE THE CHART VIEW CONTENT WITH AAOPTIONS
+#pragma CONFIGURE THE CHART VIEW CONTENT WITH `AAOPTIONS
+/**
+ Function of drawing chart view
 
-/// Function of drawing chart view
-/// @param options The instance object of AAOptions
+ @param options The instance object of chart options
+ */
 - (void)aa_drawChartWithOptions:(AAOptions *)options;
 
-/// Function of only refresh the chart data
-/// @param series Series array of AAOptions instance object
+/**
+ Function of only refresh the chart data
+ 
+ @param series Series array of AAOptions instance object
+ */
 - (void)aa_onlyRefreshTheChartDataWithOptionsSeries:(NSArray<AASeriesElement *> *)series;
 
 /// Function to refresh chart data only
@@ -145,8 +175,12 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 /// @param animation Have animation effect or not
 - (void)aa_onlyRefreshTheChartDataWithOptionsSeries:(NSArray<AASeriesElement *> *)series animation:(BOOL)animation;
 
-/// Function of refreshing whole chart view content
-/// @param options The instance object of AAOptions
+    
+/**
+ Function of refreshing whole chart view content
+
+ @param options The instance object of chart options
+ */
 - (void)aa_refreshChartWithOptions:(AAOptions *)options;
 
 
@@ -161,8 +195,8 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 ///
 /// In a responsive configuration, the response of the different rules responsive.rules is actually calling chart.update, and the updated content is configured in chartOptions.
 ///
-/// @param options A configuration object for the new chart options as defined in the options section of the API.
-/// @param redraw Whether to redraw after updating the chart, the default is true
+/// @Parameter options: A configuration object for the new chart options as defined in the options section of the API.
+/// @Parameter redraw: Whether to redraw after updating the chart, the default is true
 - (void)aa_updateChartWithOptions:(id)options redraw:(BOOL)redraw;
 
 
@@ -177,11 +211,11 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 /// The new point can be the last point, or it can be placed in the corresponding position given the X value (first, middle position, depending on the x value)
 /// Refer to https://api.highcharts.com.cn/highcharts#Series.addPoint
 ///
-/// @param elementIndex The specific series element
-/// @param options The configuration of the data point can be a single value, indicating the y value of the data point; it can also be an array containing x and y values; it can also be an object containing detailed data point configuration. For detailed configuration, see series.data.
-/// @param redraw The default is true, whether to redraw the icon after the operation is completed. When you need to add more than one point, it is highly recommended to set redraw to false and manually call chart.redraw() to redraw the chart after all operations have ended.
-/// @param shift The default is false. When this property is true, adding a new point will delete the first point in the data column (that is, keep the total number of data points in the data column unchanged). This property is very useful in the inspection chart
-/// @param animation The default is true, which means that when adding a point, it contains the default animation effect. This parameter can also be passed to the object form containing duration and easing. For details, refer to the animation related configuration.
+/// @Parameter elementIndex: The specific series element
+/// @Parameter options: The configuration of the data point can be a single value, indicating the y value of the data point; it can also be an array containing x and y values; it can also be an object containing detailed data point configuration. For detailed configuration, see series.data.
+/// @Parameter redraw: The default is true, whether to redraw the icon after the operation is completed. When you need to add more than one point, it is highly recommended to set redraw to false and manually call chart.redraw() to redraw the chart after all operations have ended.
+/// @Parameter shift: The default is false. When this property is true, adding a new point will delete the first point in the data column (that is, keep the total number of data points in the data column unchanged). This property is very useful in the inspection chart
+/// @Parameter animation: The default is true, which means that when adding a point, it contains the default animation effect. This parameter can also be passed to the object form containing duration and easing. For details, refer to the animation related configuration.
 - (void)aa_addPointToChartSeriesElementWithElementIndex:(NSUInteger)elementIndex
                                                 options:(id)options
                                                  redraw:(BOOL)redraw
@@ -189,32 +223,38 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
                                               animation:(BOOL)animation;
 
 
-- (void)aa_addPointsToChartSeriesArrayWithOptionsArray:(NSArray *)optionsArr;
+- (void)aa_addPointsToChartSeriesArrayWithoptionsArray:(NSArray *)optionsArr;
 
 /// Add a new group of points to the data column after the chart has been rendered.
 ///
-- (void)aa_addPointsToChartSeriesArrayWithOptionsArray:(NSArray *)optionsArr
+- (void)aa_addPointsToChartSeriesArrayWithoptionsArray:(NSArray *)optionsArr
                                                  shift:(BOOL)shift
                                              animation:(BOOL)animation;
 
 /// Add a new series element to the chart after the chart has been rendered.
 /// Refer to https://api.highcharts.com.cn/highcharts#Chart.addSeries
 ///
-/// @param element Chart series element
+/// @Parameter element: Chart series element
 - (void)aa_addElementToChartSeriesWithElement:(AASeriesElement *)element;
 
 /// Remove a specific series element from the chart after the chart has been rendered.
 /// Refer to https://api.highcharts.com.cn/highcharts#Series.remove
 ///
-/// @param elementIndex Chart series element index
+/// @Parameter elementIndex: Chart series element index
 - (void)aa_removeElementFromChartSeriesWithElementIndex:(NSUInteger)elementIndex;
 
-/// Show the series element content with index
-/// @param elementIndex Chart series element index
+/**
+ Show the series element content with index
+ 
+ @param elementIndex Element index
+ */
 - (void)aa_showTheSeriesElementContentWithSeriesElementIndex:(NSUInteger)elementIndex;
 
-/// Hide the series element content with index
-/// @param elementIndex Chart series element index
+/**
+ Hide the series element content with index
+ 
+ @param elementIndex Element index
+ */
 - (void)aa_hideTheSeriesElementContentWithSeriesElementIndex:(NSUInteger)elementIndex;
 
 
@@ -242,27 +282,37 @@ typedef void(^AAMoveOverEventBlock)(AAChartView *aaChartView, AAMoveOverEventMes
 
 /// Redraw chart view
 /// @param animation Have animation effect or not
-- (void)aa_redrawWithAnimation:(BOOL)animation;
+- (void)aa_redrawWithAniamtion:(BOOL)animation;
 
 @end
 
 
 @interface AAJsonConverter : NSObject
 
-/// Convert Object to be Dictionary
-/// @param objc  object instance
-+ (NSDictionary*)dictionaryWithObjectInstance:(id)objc;
+/**
+ Convert Object to be Dictionary
+ 
+ @param objc  object instance
+ @return NSDictionay
+ */
++ (NSDictionary*)getObjectData:(id)objc;
 
-/// Get pure options Json string from option instance
-/// @param optionsObject Instance object of AAOptions
-+ (NSString *)pureOptionsJsonStringWithOptionsInstance:(id)optionsObject;
+/**
+ Get pure options string
+ 
+ @param optionsObject Instance object of AAOptions
+ @return Pure options string without "\r" && "\n"
+ */
++ (NSString *)getPureOptionsString:(id)optionsObject;
 
-/// Get pure Json string from Json object
-/// @param jsonObjc Instance object of Json object
-+ (NSString *)pureJsonStringWithJsonObject:(id)jsonObjc;
++ (NSString *)getPureStringWithJSONObject:(id)objc;
 
-/// Get jsonObject from Json string
-/// @param string Json String
+/**
+ Get jsonObject from json string
+
+ @param string json string
+ @return json object
+ */
 + (id)jsonObjectWithJsonString:(NSString *)string;
 
 @end

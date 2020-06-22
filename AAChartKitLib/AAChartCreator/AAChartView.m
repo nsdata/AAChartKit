@@ -78,7 +78,7 @@ WKScriptMessageHandler
 }
 
 
-#pragma CONFIGURE THE CHART VIEW CONTENT WITH AACHARTMODEL
+#pragma CONFIGURE THE CHART VIEW CONTENT WITH `AACHARTMODEL
 
 - (void)aa_drawChartWithChartModel:(AAChartModel *)chartModel {
     AAOptions *options = [AAOptionsConstructor configureChartOptionsWithAAChartModel:chartModel];
@@ -94,13 +94,12 @@ WKScriptMessageHandler
     [self aa_onlyRefreshTheChartDataWithOptionsSeries:series];
 }
 
-- (void)aa_onlyRefreshTheChartDataWithChartModelSeries:(NSArray<AASeriesElement *> *)series
-                                             animation:(BOOL)animation {
+- (void)aa_onlyRefreshTheChartDataWithChartModelSeries:(NSArray<AASeriesElement *> *)series animation:(BOOL)animation {
     [self aa_onlyRefreshTheChartDataWithOptionsSeries:series animation:animation];
 }
 
 
-#pragma CONFIGURE THE CHART VIEW CONTENT WITH AAOPTIONS
+#pragma CONFIGURE THE CHART VIEW CONTENT WITH `AAOPTIONS
 
 - (void)aa_drawChartWithOptions:(AAOptions *)options {
     if (!_optionJson) {
@@ -121,14 +120,13 @@ WKScriptMessageHandler
     [self aa_onlyRefreshTheChartDataWithOptionsSeries:series animation:true];
 }
 
-- (void)aa_onlyRefreshTheChartDataWithOptionsSeries:(NSArray<AASeriesElement *> *)series
-                                          animation:(BOOL)animation {
+- (void)aa_onlyRefreshTheChartDataWithOptionsSeries:(NSArray<AASeriesElement *> *)series animation:(BOOL)animation {
     NSMutableArray *seriesDicArr = [NSMutableArray arrayWithCapacity:series.count];
     for (AASeriesElement *aaSeriesElement in series) {
-        [seriesDicArr addObject:[AAJsonConverter dictionaryWithObjectInstance:aaSeriesElement]];
+        [seriesDicArr addObject:[AAJsonConverter getObjectData:aaSeriesElement]];
     }
     
-    NSString *seriesJsonStr = [AAJsonConverter pureJsonStringWithJsonObject:seriesDicArr];
+    NSString *seriesJsonStr = [AAJsonConverter getPureStringWithJSONObject:seriesDicArr];
     NSString *jsStr = [NSString stringWithFormat:@"onlyRefreshTheChartDataWithSeries('%@','%d')",
                        seriesJsonStr,
                        animation];
@@ -140,27 +138,22 @@ WKScriptMessageHandler
 }
 
 - (void)aa_updateChartWithOptions:(id)options redraw:(BOOL)redraw {
-    BOOL isOptionsClass = [options isKindOfClass:[AAOptions class]];
-    NSDictionary *optionsDic = [AAJsonConverter dictionaryWithObjectInstance:options];
-    NSDictionary *finalOptionsDic;
-    if (isOptionsClass) {
-        finalOptionsDic = [AAJsonConverter dictionaryWithObjectInstance:options];
-    } else {
-        NSString *classNameStr = NSStringFromClass([options class]);
-        classNameStr = [classNameStr stringByReplacingOccurrencesOfString:@"AA"
-                                                               withString:@""];
-        
-        //convert fisrt character to be lowercase string
-        NSString *firstChar = [classNameStr substringToIndex:1];
-        NSString *lowerFirstChar = [firstChar lowercaseString];
-        classNameStr = [classNameStr substringFromIndex:1];
-        NSString *finalClassNameStr = [NSString stringWithFormat:@"%@%@",
-                                       lowerFirstChar,
-                                       classNameStr];
-        finalOptionsDic = @{finalClassNameStr:optionsDic};
-    }
+    NSString *classNameStr = NSStringFromClass([options class]);
+    classNameStr = [classNameStr stringByReplacingOccurrencesOfString:@"AA"
+                                                           withString:@""];
     
-    NSString *optionsStr = [AAJsonConverter pureOptionsJsonStringWithOptionsInstance:finalOptionsDic];
+    //convert fisrt character to be lowercase string
+    NSString *firstChar = [classNameStr substringToIndex:1];
+    NSString *lowerFirstChar = [firstChar lowercaseString];
+    classNameStr = [classNameStr substringFromIndex:1];
+    NSString *finalClassNameStr = [NSString stringWithFormat:@"%@%@",
+                                   lowerFirstChar,
+                                   classNameStr];
+    
+    NSDictionary *optionsDic = [AAJsonConverter getObjectData:options];
+    NSDictionary *finalOptionsDic = @{finalClassNameStr:optionsDic};
+    
+    NSString *optionsStr = [AAJsonConverter getPureOptionsString:finalOptionsDic];
     NSString *jsStr = [NSString stringWithFormat:@"updateChart('%@','%d')",
                        optionsStr,
                        redraw];
@@ -193,14 +186,14 @@ WKScriptMessageHandler
     if ([options isKindOfClass:[NSNumber class]]) {
         optionsStr = [NSString stringWithFormat:@"%@",options];
     } else if ([options isKindOfClass:[NSArray class]]) {
-        optionsStr = [AAJsonConverter pureJsonStringWithJsonObject:options];
+        optionsStr = [AAJsonConverter getPureStringWithJSONObject:options];
     } else {
-        NSDictionary *dic = [AAJsonConverter dictionaryWithObjectInstance:options];
-        optionsStr = [AAJsonConverter pureJsonStringWithJsonObject:dic];
+        NSDictionary *dic = [AAJsonConverter getObjectData:options];
+        optionsStr = [AAJsonConverter getPureStringWithJSONObject:dic];
     }
     
-    NSString *jsStr = [NSString stringWithFormat:@"addPointToChartSeries('%tu','%@','%d','%d','%d')",
-                       elementIndex,
+    NSString *jsStr = [NSString stringWithFormat:@"addPointToChartSeries('%lu','%@','%d','%d','%d')",
+                       (unsigned long)elementIndex,
                        optionsStr,
                        redraw,
                        shift,
@@ -208,11 +201,11 @@ WKScriptMessageHandler
     [self safeEvaluateJavaScriptString:jsStr];
 }
 
-- (void)aa_addPointsToChartSeriesArrayWithOptionsArray:(NSArray *)optionsArr {
-    [self aa_addPointsToChartSeriesArrayWithOptionsArray:optionsArr shift:true animation:true];
+- (void)aa_addPointsToChartSeriesArrayWithoptionsArray:(NSArray *)optionsArr {
+    [self aa_addPointsToChartSeriesArrayWithoptionsArray:optionsArr shift:true animation:true];
 }
 
-- (void)aa_addPointsToChartSeriesArrayWithOptionsArray:(NSArray *)optionsArr
+- (void)aa_addPointsToChartSeriesArrayWithoptionsArray:(NSArray *)optionsArr
                                                  shift:(BOOL)shift
                                              animation:(BOOL)animation {
     [optionsArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -222,33 +215,33 @@ WKScriptMessageHandler
                                                         shift:shift
                                                     animation:false];
     }];
-    [self aa_redrawWithAnimation:animation];
+    [self aa_redrawWithAniamtion:animation];
 }
 
 - (void)aa_addElementToChartSeriesWithElement:(AASeriesElement *)element {
-    NSDictionary * elementDic = [AAJsonConverter dictionaryWithObjectInstance:element];
-    NSString *elementStr = [AAJsonConverter pureJsonStringWithJsonObject:elementDic];
+    NSDictionary * elementDic = [AAJsonConverter getObjectData:element];
+    NSString *elementStr = [AAJsonConverter getPureStringWithJSONObject:elementDic];
     NSString *jsStr = [NSString stringWithFormat:@"addElementToChartSeriesWithElement('%@')",
                        elementStr];
     [self safeEvaluateJavaScriptString:jsStr];
 }
 
 - (void)aa_removeElementFromChartSeriesWithElementIndex:(NSUInteger)elementIndex {
-    NSString *jsStr = [NSString stringWithFormat:@"removeElementFromChartSeriesWithElementIndex('%tu')",
-                       elementIndex];
+    NSString *jsStr = [NSString stringWithFormat:@"removeElementFromChartSeriesWithElementIndex('%lu')",
+                       (unsigned long)elementIndex];
     [self safeEvaluateJavaScriptString:jsStr];
 }
 
 
 - (void)aa_showTheSeriesElementContentWithSeriesElementIndex:(NSUInteger)elementIndex {
-    NSString *jsStr = [NSString stringWithFormat:@"showTheSeriesElementContentWithIndex('%tu')",
-                       elementIndex];
+    NSString *jsStr = [NSString stringWithFormat:@"showTheSeriesElementContentWithIndex('%ld')",
+                       (unsigned long)elementIndex];
     [self safeEvaluateJavaScriptString:jsStr];
 }
 
 - (void)aa_hideTheSeriesElementContentWithSeriesElementIndex:(NSUInteger)elementIndex {
-    NSString *jsStr = [NSString stringWithFormat:@"hideTheSeriesElementContentWithIndex('%tu')",
-                       elementIndex];
+    NSString *jsStr = [NSString stringWithFormat:@"hideTheSeriesElementContentWithIndex('%ld')",
+                       (unsigned long)elementIndex];
     [self safeEvaluateJavaScriptString:jsStr];
 }
 
@@ -275,10 +268,10 @@ WKScriptMessageHandler
     }
     NSString *finalJSArrStr = [NSString stringWithFormat:@"[%@]",originalJsArrStr];
     
-    NSString *jsFunctionStr = [NSString stringWithFormat:@"aaGlobalChart.xAxis[0].setCategories(%@,%d)",
+    NSString *jsFuntionStr = [NSString stringWithFormat:@"aaGlobalChart.xAxis[0].setCategories(%@,%d)",
                               finalJSArrStr,
                               redraw];
-    [self safeEvaluateJavaScriptString:jsFunctionStr];
+    [self safeEvaluateJavaScriptString:jsFuntionStr];
 }
 
 - (void)aa_updateXAxisExtremesWithMin:(NSUInteger)min max:(NSUInteger)max {
@@ -287,7 +280,7 @@ WKScriptMessageHandler
     [self safeEvaluateJavaScriptString:jsFuntionStr];
 }
 
-- (void)aa_redrawWithAnimation:(BOOL)animation {
+- (void)aa_redrawWithAniamtion:(BOOL)animation {
     NSString *jsStr = [NSString stringWithFormat:@"redrawWithAnimation('%d')",animation];
     [self safeEvaluateJavaScriptString:jsStr];
 }
@@ -363,7 +356,7 @@ WKScriptMessageHandler
     if (self.isClearBackgroundColor) {
         aaOptions.chart.backgroundColor = @"rgba(0,0,0,0)";
     }
-    _optionJson = [AAJsonConverter pureOptionsJsonStringWithOptionsInstance:aaOptions];
+    _optionJson = [AAJsonConverter getPureOptionsString:aaOptions];
 }
 
 - (NSString *)configTheJavaScriptString {
@@ -460,7 +453,7 @@ WKScriptMessageHandler
                 [errorDic setValue:error.domain forKey:@"domain"];
                 [errorDic setValue:@(error.code) forKey:@"code"];
                 [errorDic setValue:error.userInfo forKey:@"userInfo"];
-                AADetailLog(@"☠️☠️💀☠️☠️!!!!!WARNING!!!!! THERE ARE SOME ERROR INFORMATION_______%@",errorDic);
+                AADetailLog(@"☠️☠️💀☠️☠️!!!!!WARNING!!!!! THERE ARE SOME ERROR INFOMATION_______%@",errorDic);
             }
         }];
     } else {
@@ -512,26 +505,8 @@ WKScriptMessageHandler
     }
 }
 
-- (void)setIsAdaptiveScreenRotation:(BOOL)isAdaptiveScreenRotation {
-    _isAdaptiveScreenRotation = isAdaptiveScreenRotation;
-    if (_isAdaptiveScreenRotation) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleDeviceOrientationChange:)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
-    }
-}
-
-- (void)handleDeviceOrientationChange:(NSNotification *)notification {
-    NSString *jsFuntionStr = [NSString stringWithFormat:@"changeContainerSize(%f,%f)",
-                              self.frame.size.width,
-                              self.frame.size.height];
-    [self safeEvaluateJavaScriptString:jsFuntionStr];
-}
-
 - (void)dealloc {
     [_userContentController removeScriptMessageHandlerForName:kUserContentMessageNameMouseOver];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
@@ -542,7 +517,7 @@ WKScriptMessageHandler
 
 @implementation AAJsonConverter
 
-+ (NSDictionary*)dictionaryWithObjectInstance:(id)objc {
++ (NSDictionary*)getObjectData:(id)objc {
     unsigned int propsCount;
     objc_property_t *props = class_copyPropertyList([objc class], &propsCount);
     NSMutableDictionary *propsDic = [NSMutableDictionary dictionaryWithCapacity:propsCount];
@@ -589,7 +564,7 @@ WKScriptMessageHandler
         return dic;
     }
     
-    return [self dictionaryWithObjectInstance:objc];
+    return [self getObjectData:objc];
 }
 
 + (NSString*)wipeOffTheLineBreakAndBlankCharacter:(NSString *)originalString {
@@ -598,19 +573,18 @@ WKScriptMessageHandler
     return originalString;
 }
 
-+ (NSString *)pureOptionsJsonStringWithOptionsInstance:(id)optionsObject {
++ (NSString *)getPureOptionsString:(id)optionsObject {
     NSDictionary *dic;
     if ([optionsObject isKindOfClass:[NSDictionary class]] ) {
         dic = optionsObject;
     } else {
-        dic = [self dictionaryWithObjectInstance:optionsObject];
+        dic = [self getObjectData:optionsObject];
     }
-    return [self pureJsonStringWithJsonObject:dic];
+    return [self getPureStringWithJSONObject:dic];
 }
 
-+ (NSString *)pureJsonStringWithJsonObject:(id)jsonObjc {
-    NSString *seriesStr = [self jsonStringWithJsonObject:jsonObjc];
-    AADetailLog(@"----------- console log AAOptions JSON information of AAChartView -----------:\n%@",seriesStr);
++ (NSString *)getPureStringWithJSONObject:(id)objc {
+    NSString *seriesStr = [self jsonStringWithJsonObject:objc];
     return [self wipeOffTheLineBreakAndBlankCharacter:seriesStr];
 }
 
@@ -621,7 +595,7 @@ WKScriptMessageHandler
                                                          error:&error];
     NSString *string =[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     if (error) {
-        AADetailLog(@"❌❌❌ data with JSONObject serialization failed：%@", error);
+        AADetailLog(@"data with JSONObject serialization failed：%@", error);
         return nil;
     }
     return string;
@@ -635,7 +609,7 @@ WKScriptMessageHandler
                                                        options:NSJSONReadingMutableContainers
                                                          error:&error];
         if (error) {
-            AADetailLog(@"❌❌❌ JSONObject with data serialization failed：%@", error);
+            AADetailLog(@"JSONObject with data serialization failed：%@", error);
             return nil;
         }
         return jsonObjet;

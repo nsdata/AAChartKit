@@ -33,7 +33,6 @@
 #import <Foundation/Foundation.h>
 #import "AASeriesElement.h"
 #import "AAPlotLinesElement.h"
-@class AAScrollablePlotArea;
 
 #define AACHARTKIT_EXTERN     extern __attribute__((visibility ("default")))
 
@@ -104,7 +103,7 @@ AACHARTKIT_EXTERN AAChartType const AAChartTypeBoxplot;
 AACHARTKIT_EXTERN AAChartType const AAChartTypeWaterfall;
 AACHARTKIT_EXTERN AAChartType const AAChartTypePolygon;
 AACHARTKIT_EXTERN AAChartType const AAChartTypeErrorbar;
-AACHARTKIT_EXTERN AAChartType const AAChartTypeGauge;
+
 
 AACHARTKIT_EXTERN AAChartLayoutType const AAChartLayoutTypeHorizontal;
 AACHARTKIT_EXTERN AAChartLayoutType const AAChartLayoutTypeVertical;
@@ -236,6 +235,5 @@ AAPropStatementAndPropSetFuncStatement(strong, AAChartModel, NSNumber *, borderR
 AAPropStatementAndPropSetFuncStatement(strong, AAChartModel, NSNumber *, markerRadius) //折线连接点的半径长度
 AAPropStatementAndPropSetFuncStatement(copy,   AAChartModel, NSString *, zoomResetButtonText)  //String to display in 'zoom reset button"
 AAPropStatementAndPropSetFuncStatement(assign, AAChartModel, BOOL      , touchEventEnabled)
-AAPropStatementAndPropSetFuncStatement(strong, AAChartModel, AAScrollablePlotArea *, scrollablePlotArea)
 
 @end

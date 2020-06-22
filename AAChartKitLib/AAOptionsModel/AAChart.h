@@ -34,7 +34,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AAGlobalMacro.h"
-@class AAAnimation, AAScrollablePlotArea;
+@class AAAnimation;
 
 @interface AAChart : NSObject
 
@@ -52,19 +52,8 @@ AAPropStatementAndPropSetFuncStatement(strong, AAChart, NSNumber    *, marginTop
 AAPropStatementAndPropSetFuncStatement(strong, AAChart, NSNumber    *, marginRight) //👉
 AAPropStatementAndPropSetFuncStatement(strong, AAChart, NSNumber    *, marginBottom) //👇
 AAPropStatementAndPropSetFuncStatement(strong, AAChart, NSNumber    *, marginLeft) //👈
-AAPropStatementAndPropSetFuncStatement(strong, AAChart, AAScrollablePlotArea *, scrollablePlotArea)
 
 @end
 
 
-
-@interface AAScrollablePlotArea : NSObject
-
-AAPropStatementAndPropSetFuncStatement(strong, AAScrollablePlotArea, NSNumber *, minHeight)
-AAPropStatementAndPropSetFuncStatement(strong, AAScrollablePlotArea, NSNumber *, minWidth)
-AAPropStatementAndPropSetFuncStatement(strong, AAScrollablePlotArea, NSNumber *, opacity)
-AAPropStatementAndPropSetFuncStatement(strong, AAScrollablePlotArea, NSNumber *, scrollPositionX)
-AAPropStatementAndPropSetFuncStatement(strong, AAScrollablePlotArea, NSNumber *, scrollPositionY)
-
-@end
 

@@ -68,8 +68,6 @@ AAPropStatementAndPropSetFuncStatement(strong, AASeriesElement, AAShadow *, shad
 AAPropStatementAndPropSetFuncStatement(copy,   AASeriesElement, NSString *, stack)
 AAPropStatementAndPropSetFuncStatement(strong, AASeriesElement, AATooltip*, tooltip)
 AAPropStatementAndPropSetFuncStatement(strong, AASeriesElement, NSNumber *, zIndex) //层叠，series element 在图表中显示的层叠级别，值越大，显示越向前
-AAPropStatementAndPropSetFuncStatement(copy,   AASeriesElement, NSString *, pointPlacement)
-AAPropStatementAndPropSetFuncStatement(strong, AASeriesElement, id        , enableMouseTracking)
 
 @end
 

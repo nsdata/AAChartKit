@@ -32,7 +32,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class AADataLabels, AAStates;
+@class AADataLabels;
 
 @interface AALine : NSObject
 
@@ -40,6 +40,5 @@ AAPropStatementAndPropSetFuncStatement(strong, AALine, NSNumber     *, lineWidth
 AAPropStatementAndPropSetFuncStatement(strong, AALine, AADataLabels *, dataLabels) 
 //AAPropStatementAndPropSetFuncStatement(assign, AALine, BOOL, enableMouseTracking) 
 //AAPropStatementAndPropSetFuncStatement(copy,   AALine, NSString *, dashStyle) //折线的样式类型(字符串枚举)
-AAPropStatementAndPropSetFuncStatement(strong, AALine, AAStates *, states)
 
 @end
